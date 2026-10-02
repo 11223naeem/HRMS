@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' | HRMS'">HRMS</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="nav" th:fragment="nav(active)">
+  <a class="brand" th:href="@{/dashboard}">HRMS</a>
+  <div class="links">
+    <a th:href="@{/dashboard}" th:classappend="${active == 'dash'} ? 'active'">Dashboard</a>
+    <a th:unless="${me.admin}" th:href="@{/attendance}" th:classappend="${active == 'att'} ? 'active'">Attendance</a>
+    <a th:unless="${me.admin}" th:href="@{/leaves}" th:classappend="${active == 'leave'} ? 'active'">My Leave</a>
+    <a th:unless="${me.employee}" th:href="@{/approvals}" th:classappend="${active == 'appr'} ? 'active'">Approvals</a>
+    <a th:unless="${me.employee}" th:href="@{/team}" th:classappend="${active == 'team'} ? 'active'">Team</a>
+    <a th:href="@{/letters}" th:classappend="${active == 'letters'} ? 'active'">Letters</a>
+    <a th:if="${me.admin}" th:href="@{/admin/roles}" th:classappend="${active == 'roles'} ? 'active'">Roles</a>
+  </div>
+  <div class="user">
+    <span th:text="${me.name}">Name</span>
+    <small th:text="${me.role}">ROLE</small>
+    <a th:href="@{/logout}">Logout</a>
+  </div>
+</nav>
+<div class="toasts" th:fragment="toast">
+  <div class="toast ok" th:if="${msg}" th:text="${msg}"></div>
+  <div class="toast err" th:if="${err}" th:text="${err}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head('Roles')}"></head>
+
+<body>
+
+<div th:replace="~{fragments :: nav('roles')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+
+<main class="wrap">
+
+    <div class="head">
+        <h2>Change role</h2>
+    </div>
+
+    <!-- Change Role -->
+    <div class="card">
+        <form method="post"
+              th:action="@{/admin/roles}"
+              class="cols3">
+
+            <div>
+                <label>Person</label>
+
+                <select name="employeeId" required>
+                    <option th:each="p : ${people}"
+                            th:value="${p.id}"
+                            th:text="${p.name + ' (' + p.role + ')'}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>New role</label>
+
+                <select name="role">
+                    <option value="MANAGER">Manager</option>
+                    <option value="EMPLOYEE">Employee</option>
+                </select>
+            </div>
+
+            <div class="end">
+                <button class="btn">Update</button>
+            </div>
+
+        </form>
+    </div>
+
+
+    <!-- Employees / Managers -->
+    <div class="card">
+        <div class="scroll">
+
+            <table>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+                <tr th:each="p : ${people}">
+
+                    <td th:text="${p.name}"></td>
+
+                    <td th:text="${p.email}"></td>
+
+                    <td th:text="${p.designation}"></td>
+
+                    <td>
+                        <span class="tag"
+                              th:text="${p.role}">
+                        </span>
+                    </td>
+
+                    <!-- ACTIVE / EXPIRED -->
+                    <td>
+
+                        <span th:if="${p.exited}"
+                              class="tag">
+                            EXPIRED
+                        </span>
+
+                        <span th:unless="${p.exited}"
+                              class="tag">
+                            ACTIVE
+                        </span>
+
+                    </td>
+
+                    <!-- ACTIVATE -->
+                    <td>
+
+                        <form th:if="${p.exited}"
+                              method="post"
+                              th:action="@{/admin/activate}">
+
+                            <input type="hidden"
+                                   name="employeeId"
+                                   th:value="${p.id}">
+
+                            <button type="submit"
+                                    class="btn">
+                                Activate
+                            </button>
+
+                        </form>
+
+                        <span th:unless="${p.exited}">
+                            -
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

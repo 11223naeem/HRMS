@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Team')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('team')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head">
+    <h2 th:text="${me.admin} ? 'All employees and managers' : 'My team'">Team</h2>
+    <form method="get" th:action="@{/team}" class="inline">
+      <label>Month</label>
+      <input type="month" name="month" th:value="${month}" onchange="this.form.submit()">
+    </form>
+  </div>
+  <div class="card">
+    <div class="scroll">
+      <table>
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Designation</th>
+        <th>Present</th>
+        <th>Leave (month)</th>
+        <th>Absent</th>
+        <th>Base</th>
+        <th>Deducted</th>
+        <th>Performance</th>
+        <th>Net salary</th>
+    </tr>
+
+    <tr th:each="r : ${rows}">
+        <td th:text="${r.emp.name}"></td>
+
+        <td>
+            <span class="tag" th:text="${r.emp.role}"></span>
+        </td>
+
+        <!-- ACTIVE / EXPIRED -->
+        <td>
+            <span th:if="${r.emp.exited}" class="tag">
+                EXPIRED
+            </span>
+
+            <span th:unless="${r.emp.exited}" class="tag">
+                ACTIVE
+            </span>
+        </td>
+
+        <td th:text="${r.emp.designation}"></td>
+
+        <td th:text="${r.st.presentDays}"></td>
+
+        <td th:text="${r.st.leaveMonth}"></td>
+
+        <td th:text="${r.st.absentMonth}"></td>
+
+        <td th:text="'Rs ' + ${#numbers.formatInteger(r.st.base, 1, 'COMMA')}"></td>
+
+        <td th:text="'Rs ' + ${#numbers.formatInteger(r.st.deducted, 1, 'COMMA')}"></td>
+
+        <td>
+            <div class="bar">
+                <span
+                    th:classappend="${r.st.bar}"
+                    th:style="'width:' + ${r.st.performance} + '%'">
+                </span>
+            </div>
+
+            <small th:text="${r.st.performance} + '%'"></small>
+        </td>
+
+        <td>
+            <b th:text="'Rs ' + ${#numbers.formatInteger(r.st.net, 1, 'COMMA')}"></b>
+        </td>
+    </tr>
+</table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

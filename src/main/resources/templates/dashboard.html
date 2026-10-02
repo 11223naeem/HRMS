@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Dashboard')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('dash')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head">
+    <div>
+      <h2>Hello, <span th:text="${me.name}">User</span></h2>
+      <p class="muted" th:text="${me.designation} + ' - ' + ${me.role}">Designation</p>
+    </div>
+    <form method="get" th:action="@{/dashboard}" class="inline">
+      <label>Month</label>
+      <input type="month" name="month" th:value="${month}" onchange="this.form.submit()">
+    </form>
+  </div>
+
+  <div class="tiles">
+    <div class="tile green"><span>Present days</span><b th:text="${s.presentDays}">0</b></div>
+    <div class="tile amber"><span>Approved leave (this month)</span><b th:text="${s.leaveMonth}">0</b></div>
+    <div class="tile amber"><span>Leave days (all months)</span><b th:text="${s.leaveAll}">0</b></div>
+    <div class="tile red"><span>Absent days (this month)</span><b th:text="${s.absentMonth}">0</b></div>
+    <div class="tile"><span>Monthly salary</span><b th:text="'Rs ' + ${#numbers.formatInteger(s.base, 1, 'COMMA')}">0</b></div>
+    <div class="tile red"><span>Salary deducted</span><b th:text="'Rs ' + ${#numbers.formatInteger(s.deducted, 1, 'COMMA')}">0</b></div>
+    <div class="tile green"><span>Net salary</span><b th:text="'Rs ' + ${#numbers.formatInteger(s.net, 1, 'COMMA')}">0</b></div>
+    <div class="tile"><span>Performance</span><b th:text="${s.performance} + '%'">100%</b></div>
+  </div>
+
+  <div class="card">
+    <h3>Performance</h3>
+    <div class="bar big"><span th:classappend="${s.bar}" th:style="'width:' + ${s.performance} + '%'"></span></div>
+    <p class="muted">Starts at 100%, loses 2 points for every leave day or absent day (green 80+, amber 50+, red below).</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Today's attendance</h3>
+      <p>Check-in: <b th:text="${today != null and today.loginTime != null ? #temporals.format(today.loginTime, 'HH:mm:ss') : '-'}">-</b></p>
+      <p>Check-out: <b th:text="${today != null and today.logoutTime != null ? #temporals.format(today.logoutTime, 'HH:mm:ss') : '-'}">-</b></p>
+      <a class="btn" th:href="@{/attendance}">Open face attendance</a>
+    </div>
+    <div class="card">
+      <h3>My letters</h3>
+      <p class="muted" th:if="${#lists.isEmpty(myLetters)}">No letters yet.</p>
+      <ul class="list">
+        <li th:each="l : ${myLetters}">
+          <a th:href="@{/letters/{id}(id=${l.id})}" th:text="${l.type} + ' letter'">Letter</a>
+          <small class="muted" th:text="${#temporals.format(l.issuedOn, 'dd MMM yyyy')}"></small>
+        </li>
+      </ul>
+      <a th:href="@{/letters}">All letters</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

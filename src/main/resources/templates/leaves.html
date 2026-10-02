@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Leave')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('leave')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head"><h2>My leave</h2></div>
+  <div class="card">
+    <h3>Apply for leave</h3>
+    <form method="post" th:action="@{/leaves/apply}" class="cols3">
+      <div><label>From</label><input type="date" name="fromDate" required></div>
+      <div><label>To</label><input type="date" name="toDate" required></div>
+      <div><label>Reason</label><input name="reason" maxlength="500" required></div>
+      <div class="end"><button class="btn">Submit</button></div>
+    </form>
+    <p class="muted">Saturdays and Sundays are never counted. Only approved leave is deducted (Rs 1000 per working day).</p>
+  </div>
+  <div class="card">
+    <h3>My requests</h3>
+    <div class="scroll">
+      <table>
+        <tr><th>From</th><th>To</th><th>Working days</th><th>Deduction if approved</th><th>Reason</th><th>Status</th><th>Decided on</th></tr>
+        <tr th:each="i : ${items}">
+          <td th:text="${#temporals.format(i.req.fromDate, 'dd MMM yyyy')}"></td>
+          <td th:text="${#temporals.format(i.req.toDate, 'dd MMM yyyy')}"></td>
+          <td th:text="${i.days}"></td>
+          <td th:text="'Rs ' + ${#numbers.formatInteger(i.deduction, 1, 'COMMA')}"></td>
+          <td th:text="${i.req.reason}"></td>
+          <td><span class="tag" th:classappend="${i.req.status.name().toLowerCase()}" th:text="${i.req.status}"></span></td>
+          <td th:text="${i.req.decidedOn != null ? #temporals.format(i.req.decidedOn, 'dd MMM yyyy') : '-'}"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

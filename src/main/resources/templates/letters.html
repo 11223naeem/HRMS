@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Letters')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('letters')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head"><h2>Letters</h2></div>
+
+  <div class="card" th:unless="${me.employee}">
+    <h3>Issue a letter</h3>
+    <form method="post" th:action="@{/letters/issue}" class="cols3">
+      <div><label>Person</label>
+        <select name="employeeId" required>
+          <option th:each="p : ${people}" th:value="${p.id}" th:text="${p.name + ' (' + p.role + ')'}"></option>
+        </select></div>
+      <div><label>Type</label>
+        <select name="type"><option value="OFFER">Offer</option><option value="EXPIRATION">Expiration</option></select></div>
+      <div><label>Joining date (offer, optional)</label><input type="date" name="joinDate"></div>
+      <div><label>Last day (expiration, default today)</label><input type="date" name="exitDate"></div>
+      <div class="end"><button class="btn">Issue</button></div>
+    </form>
+  </div>
+
+  <div class="card" th:unless="${me.admin}">
+    <h3>My letters</h3>
+    <p class="muted" th:if="${#lists.isEmpty(mine)}">No letters yet.</p>
+    <ul class="list">
+      <li th:each="l : ${mine}">
+        <span class="tag" th:text="${l.type}"></span>
+        <a th:href="@{/letters/{id}(id=${l.id})}" target="_blank">Open &amp; print</a>
+        <small class="muted" th:text="${#temporals.format(l.issuedOn, 'dd MMM yyyy')}"></small>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card" th:unless="${me.employee}">
+    <h3>Issued letters</h3>
+    <div class="scroll">
+      <table>
+        <tr><th>To</th><th>Type</th><th>Issued on</th><th></th></tr>
+        <tr th:each="l : ${issued}">
+          <td th:text="${l.employee.name}"></td>
+          <td><span class="tag" th:text="${l.type}"></span></td>
+          <td th:text="${#temporals.format(l.issuedOn, 'dd MMM yyyy')}"></td>
+          <td><a th:href="@{/letters/{id}(id=${l.id})}" target="_blank">Open</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

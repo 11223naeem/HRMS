@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Admin')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('dash')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head"><h2>Admin overview</h2></div>
+  <div class="tiles">
+    <div class="tile green"><span>Employees</span><b th:text="${nEmp}">0</b></div>
+    <div class="tile"><span>Managers</span><b th:text="${nMgr}">0</b></div>
+    <div class="tile amber"><span>Pending manager leaves</span><b th:text="${nPending}">0</b></div>
+    <div class="tile"><span>Letters issued</span><b th:text="${nLetters}">0</b></div>
+  </div>
+  <div class="card">
+    <h3>Quick links</h3>
+    <div class="row">
+      <a class="btn" th:href="@{/approvals}">Manager leave approvals</a>
+      <a class="btn alt" th:href="@{/team}">All employees &amp; managers</a>
+      <a class="btn alt" th:href="@{/letters}">Issue letters</a>
+      <a class="btn alt" th:href="@{/admin/roles}">Change roles</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

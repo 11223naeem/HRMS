@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Register')}"></head>
+<body class="auth">
+<div th:replace="~{fragments :: toast}"></div>
+<div class="card auth-card wide">
+  <h1>Create account</h1>
+  <p class="muted">Your face is registered for attendance (needs camera; use http://localhost or HTTPS).</p>
+  <form method="post" th:action="@{/register}" id="regForm">
+    <div class="cols">
+      <div>
+        <label>Full name</label>
+        <input name="name" th:value="${name}" required>
+        <label>Email</label>
+        <input type="email" name="email" th:value="${email}" required>
+        <label>Designation</label>
+        <input name="designation" th:value="${designation}" required>
+        <label>Password (min 6)</label>
+        <input type="password" name="password" minlength="6" required>
+        <label>Role</label>
+        <select name="role" id="role">
+          <option value="EMPLOYEE">Employee</option>
+          <option value="MANAGER" th:selected="${role == 'MANAGER'}">Manager</option>
+        </select>
+        <div id="mgrBox" hidden>
+          <label>Manager code</label>
+          <input name="managerCode" type="password" autocomplete="off">
+        </div>
+      </div>
+      <div>
+        <label>Face capture (3-5 samples)</label>
+        <div id="camBox" class="camwrap" hidden><video id="cam" autoplay muted playsinline></video></div>
+        <p id="status" class="status"></p>
+        <p class="muted">Samples: <b id="count">0</b> / 5</p>
+        <div class="row">
+          <button type="button" class="btn alt" id="start">Start camera</button>
+          <button type="button" class="btn" id="capture" disabled>Capture sample</button>
+          <button type="button" class="btn ghost" id="reset">Reset</button>
+        </div>
+        <input type="hidden" name="faceDescriptors" id="faceDescriptors">
+      </div>
+    </div>
+    <button class="btn block" id="regBtn" disabled>Register</button>
+  </form>
+  <p class="muted center">Already registered? <a th:href="@{/login}">Login</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js"></script>
+<script th:src="@{/js/face.js}"></script>
+<script th:src="@{/js/register.js}"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Login')}"></head>
+<body class="auth">
+<div th:replace="~{fragments :: toast}"></div>
+<div class="card auth-card">
+  <h1>HRMS</h1>
+  <p class="muted">Sign in to continue</p>
+  <form method="post" th:action="@{/login}">
+    <label>Email</label>
+    <input type="email" name="email" th:value="${email}" required autofocus>
+    <label>Password</label>
+    <input type="password" name="password" required>
+    <button class="btn block">Login</button>
+  </form>
+  <p class="muted center">New here? <a th:href="@{/register}">Create an account</a></p>
+</div>
+</body>
+</html>

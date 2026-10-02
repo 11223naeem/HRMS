@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Approvals')}"></head>
+<body>
+<div th:replace="~{fragments :: nav('appr')}"></div>
+<div th:replace="~{fragments :: toast}"></div>
+<main class="wrap">
+  <div class="head"><h2 th:text="${me.admin} ? 'Pending manager leave requests' : 'Pending employee leave requests'">Pending</h2></div>
+  <div class="card">
+    <p class="muted" th:if="${#lists.isEmpty(items)}">Nothing pending.</p>
+    <div class="scroll" th:unless="${#lists.isEmpty(items)}">
+      <table>
+        <tr><th>Name</th><th>From</th><th>To</th><th>Working days</th><th>Deduction if approved</th><th>Reason</th><th>Action</th></tr>
+        <tr th:each="i : ${items}">
+          <td th:text="${i.req.employee.name}"></td>
+          <td th:text="${#temporals.format(i.req.fromDate, 'dd MMM yyyy')}"></td>
+          <td th:text="${#temporals.format(i.req.toDate, 'dd MMM yyyy')}"></td>
+          <td th:text="${i.days}"></td>
+          <td th:text="'Rs ' + ${#numbers.formatInteger(i.deduction, 1, 'COMMA')}"></td>
+          <td th:text="${i.req.reason}"></td>
+          <td class="nowrap">
+            <form class="inline" method="post" th:action="@{/approvals/{id}/approve(id=${i.req.id})}"><button class="btn sm">Approve</button></form>
+            <form class="inline" method="post" th:action="@{/approvals/{id}/reject(id=${i.req.id})}"><button class="btn sm danger">Reject</button></form>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

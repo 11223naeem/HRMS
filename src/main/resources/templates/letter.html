@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Letter')}"></head>
+<body>
+<div class="noprint" th:replace="~{fragments :: nav('letters')}"></div>
+<main class="wrap">
+  <div class="paper">
+    <h2 th:text="${l.type.name() == 'OFFER'} ? 'Offer Letter' : 'Letter of Expiration'">Letter</h2>
+    <p class="muted">Date: <span th:text="${issuedOn}"></span></p>
+    <pre th:text="${l.content}"></pre>
+  </div>
+  <p class="center noprint"><button class="btn" onclick="window.print()">Print</button></p>
+</main>
+</body>
+</html>
