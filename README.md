@@ -1,6 +1,6 @@
 # HRMS - Human Resource Management System
 
-A full-stack Human Resource Management System developed using **Java, Spring Boot, Thymeleaf and MySQL**.
+A full-stack Human Resource Management System developed using **Java, Spring Boot, Thymeleaf and PostgreSQL**.
 
 The system provides employee management, attendance tracking, leave management, payroll calculation, performance tracking and employee letter management.
 
@@ -31,7 +31,7 @@ The system provides employee management, attendance tracking, leave management, 
 * Expiration/Leaving Letter
 * Team/Employee Management
 * Logout
-* MySQL Database
+* PostgreSQL Database
 
 ---
 
@@ -55,7 +55,7 @@ The system provides employee management, attendance tracking, leave management, 
 
 ### Database
 
-* MySQL
+* PostgreSQL
 
 ### Other Technologies
 
@@ -262,9 +262,9 @@ git clone https://github.com/YOUR_USERNAME/HRMS-Face-Recognition.git
 cd HRMS-Face-Recognition
 ```
 
-## 3. Configure MySQL
+## 3. Configure PostgreSQL
 
-Create a MySQL database named:
+Create an empty PostgreSQL database named (tables are created automatically):
 
 ```text
 hrms

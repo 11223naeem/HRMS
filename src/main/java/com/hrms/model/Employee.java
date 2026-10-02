@@ -30,8 +30,8 @@ public class Employee {
     private LocalDate exitDate;
 
     /** JSON array of 3-5 face vectors, each 128 numbers. */
-    @Column(columnDefinition = "LONGTEXT")
-    private String faceDescriptors;
+   @Column(length = 100000)
+private String faceDescriptors;
 
     public boolean isAdmin() { return role == Role.ADMIN; }
     public boolean isManager() { return role == Role.MANAGER; }
