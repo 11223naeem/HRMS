@@ -1,23 +1,317 @@
-# HRMS (Spring Boot 3.3, Thymeleaf, MySQL, face-api.js)
+# HRMS - Human Resource Management System
 
-## Run
-1. Install JDK 17+ and Maven 3.9+, and start MySQL 8 (the `hrms` database is created automatically).
-2. Edit `src/main/resources/application.properties`: MySQL username/password, and `office.lat` / `office.lng`.
-3. `mvn spring-boot:run`, then open **http://localhost:8080** (camera + GPS need localhost or HTTPS).
-4. Admin login: `admin@hrms.com` / `Admin@123` (from application.properties). Manager code: `MGR2026`.
+A full-stack Human Resource Management System developed using **Java, Spring Boot, Thymeleaf and MySQL**.
 
-## Office coordinates
-Open http://localhost:8080 in Chrome, press F12, Console tab, and run:
-`navigator.geolocation.getCurrentPosition(p => console.log(p.coords.latitude, p.coords.longitude))`
-Paste the two numbers into office.lat / office.lng and restart. (Or right-click your spot in Google Maps.)
+The system provides employee management, attendance tracking, leave management, payroll calculation, performance tracking and employee letter management.
 
-## Test scenarios
-Sept 2026 has 22 working days -> base Rs 22,000.
-* 16-day leave: employee applies Mon 2026-09-07 to Mon 2026-09-28 (16 working days); a manager approves -> deducted Rs 16,000, net Rs 6,000.
-* Weekend never counts: apply Fri 2026-10-02 to Mon 2026-10-05 -> shows 2 working days / Rs 2,000.
-* Absent weekday: `UPDATE hrms.employee SET join_date = CURDATE() - INTERVAL 1 DAY WHERE email='emp@x.com';`
-  (yesterday must be Mon-Fri) -> 1 absent day: deducted Rs 1,000, performance 98%.
-* Valid 6-hour day: check in, then `UPDATE hrms.attendance SET login_time = login_time - INTERVAL 7 HOUR;` and check out.
-* Face mismatch: log in as user A and let user B check in (or set face.threshold=0.01) -> "Face not recognised".
-* Outside 100 m: change office.lat/lng to another place (or Chrome DevTools > Sensors > Location) -> "Too far from office (... m)".
-* Roles: register a manager with the code; a wrong code is refused; admin can promote/demote on the Roles page.
+---
+
+## 🚀 Features
+
+* Employee Registration and Login
+* Admin Login
+* Manager Login
+* Role-based access
+* Employee Dashboard
+* Manager Dashboard
+* Admin Dashboard
+* Face Recognition Attendance
+* Check-in and Check-out
+* Working Hours Calculation
+* Automatic Absent Tracking
+* Leave Application
+* Manager Leave Approval/Rejection
+* Leave Balance Tracking
+* Payroll Calculation
+* Salary Deduction for Absence
+* Approved Leave Handling
+* Employee Performance Calculation
+* Offer Letter
+* Experience Letter
+* Expiration/Leaving Letter
+* Team/Employee Management
+* Logout
+* MySQL Database
+
+---
+
+## 🛠️ Technologies Used
+
+### Backend
+
+* Java 17
+* Spring Boot
+* Spring MVC
+* Spring Data JPA
+* Spring Security
+* Maven
+
+### Frontend
+
+* HTML
+* CSS
+* JavaScript
+* Thymeleaf
+
+### Database
+
+* MySQL
+
+### Other Technologies
+
+* Git
+* GitHub
+* Face Recognition
+* OpenCV
+
+---
+
+## 📋 HRMS Modules
+
+### Admin
+
+The administrator can:
+
+* Manage employees
+* Manage managers
+* View system statistics
+* Manage employee information
+* View letters
+* Monitor the HRMS system
+
+### Employee
+
+Employees can:
+
+* Login/Register
+* View dashboard
+* Mark attendance
+* Check attendance status
+* Apply for leave
+* View leave status
+* View salary information
+* View performance
+* View employee letters
+
+### Manager
+
+Managers can:
+
+* View team members
+* View employee attendance
+* Review leave requests
+* Approve leave
+* Reject leave
+* Monitor employee performance
+
+---
+
+## ⏰ Attendance System
+
+The attendance module supports:
+
+* Face recognition
+* Check-in
+* Check-out
+* Working hours calculation
+* Automatic absent tracking
+
+A working day is considered **Monday to Friday**.
+
+Saturday and Sunday are excluded from working-day calculations.
+
+An employee is considered present when:
+
+* Check-in is recorded
+* Check-out is recorded
+* Minimum required working hours are completed
+
+If there is no valid attendance for a past working day, the day is counted as absent unless the employee has approved leave.
+
+---
+
+## 🏖️ Leave Management
+
+Employees can submit leave requests.
+
+The workflow is:
+
+```text
+Employee
+   ↓
+Apply Leave
+   ↓
+Manager
+   ↓
+Approve / Reject
+   ↓
+Employee Leave Status
+```
+
+Approved leave is not treated as absence.
+
+---
+
+## 💰 Payroll
+
+The payroll module calculates salary based on working days.
+
+The system supports:
+
+* Daily salary rate
+* Working-day calculation
+* Absence deduction
+* Approved leave handling
+* Net salary calculation
+
+Weekends are excluded from working-day calculations.
+
+---
+
+## 📊 Performance Tracking
+
+Employee performance starts from 100%.
+
+Performance points are adjusted based on leave and absence according to the configured HRMS rules.
+
+---
+
+## 📄 Employee Letters
+
+The HRMS provides employee letter management including:
+
+* Offer Letter
+* Experience Letter
+* Leaving/Expiration Letter
+
+---
+
+# 📸 Screenshots
+
+## Login
+
+![Login](screenshots/login.png)
+
+---
+
+## Register
+
+![Register](screenshots/register.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+---
+
+## Employee Dashboard
+
+![Employee Dashboard](screenshots/employee-dashboard.png)
+
+---
+
+## Manager Dashboard
+
+![Manager Dashboard](screenshots/manager-dashboard.png)
+
+---
+
+## Attendance
+
+![Attendance](screenshots/attendance.png)
+
+---
+
+## Leave Request
+
+![Leave Request](screenshots/leave-request.png)
+
+---
+
+## Leave Approval
+
+![Leave Approval](screenshots/leave-approval.png)
+
+---
+
+## Payroll
+
+![Payroll](screenshots/payroll.png)
+
+---
+
+## Employee Letters
+
+![Letters](screenshots/letters.png)
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/HRMS-Face-Recognition.git
+```
+
+## 2. Navigate to the project
+
+```bash
+cd HRMS-Face-Recognition
+```
+
+## 3. Configure MySQL
+
+Create a MySQL database named:
+
+```text
+hrms
+```
+
+Update the database configuration in:
+
+```text
+src/main/resources/application.properties
+```
+
+## 4. Build the project
+
+```bash
+mvn clean install
+```
+
+## 5. Run the application
+
+```bash
+mvn spring-boot:run
+```
+
+The application will run on:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# 🔐 Security
+
+Sensitive credentials such as database passwords should be stored using environment variables and should not be committed to GitHub.
+
+---
+
+# 👨‍💻 Developer
+
+**Naeem Shaikh**
+
+Java Developer | Java Full Stack Developer
+
+---
+
+## 📌 Project Status
+
+**Completed**
+
+The project is ready for demonstration and deployment.
